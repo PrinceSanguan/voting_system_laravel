@@ -22,28 +22,58 @@
                 <!-- [ Layout navbar ( Header ) ] Start -->
                 @include('subadmin.files.navbar')
                 <!-- [ Layout navbar ( Header ) ] End -->
-
+                
                 <!-- [ Layout content ] Start -->
                 <div class="layout-content">
+                    
 
                     <!-- [ content ] Start -->
                     <div class="container-fluid flex-grow-1 container-p-y">
-                        <h4 class="font-weight-bold py-3 mb-0">{{ $label }} for:  {{ request()->query('election_title') }}</h4>
+                        <h4 class="font-weight-bold py-3 mb-0">{{ $label }} for {{ request()->query('tbl_year') }} {{ request()->query('election_title') }}</h4>
                         <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item active">{{ $label }} for:  {{ request()->query('election_title') }}</li>
+                                <li class="breadcrumb-item active">{{ $label }} for {{ request()->query('election_year') }} {{ request()->query('election_title') }}</li>
                             </ol>
                         </div>
-                        <hr class="border-light container-m--x my-0">
+                        <div>
+                            <!-- HOW TO ADD POSITION Button -->
+                            <button type="button" class="btn btn-info my-3" id="howToAddPositionBtn">
+    HOW TO ADD CANDIDATE
+</button>
+
+<div id="instructionsCard" class="card mt-3"  style="display: none;">
+    <div class="card-header bg-primary text-white style" >
+        <strong>How to Add, Update, & Delete Candidate</strong>
+    </div>
+    <div class="card-body">
+        <p>
+            <span style="color: blue;"><strong>ADD:</strong></span> Click the "+ADD name of (POSITION)" button.
+        </p>
+        <p>
+            <span style="color: green;"><strong>UPDATE:</strong></span> Click the "green pen icon" in the Action Table.
+        </p>
+        <p>
+            <span style="color: red;"><strong>DELETE:</strong></span> Click the "red trash icon" in the Action Table.
+        </p>
+
+                        </div>
+                        </div>
+</div>
+                        
+                        
+
+
+          
                         @if(session()->has('response'))
                             <div class="alert {{ session()->get('response') == 1 ? 'alert-primary' : 'alert-danger' }} alert-dismissible fade show">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
                                 {{ session()->get('message') }}
                             </div>
                         @endif
+                        <div class>
                         <div class="my-2 d-flex justify-content-between">
-                            <button onclick="window.location.href='{{ url('subadmin/election_type') }}'" type="button" class="btn btn-danger px-4 my-3">
+                            <button onclick="window.location.href='{{ url('subadmin/election_type/') }}'" type="button" class="btn btn-danger px-4 my-3">
                               <i class="fa fa-arrow-left"></i> Back
                             </button>
 
@@ -54,80 +84,61 @@
                         </div>
                         
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    Add {{ $data }}
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <form method="post" action="{{ route('add.candidate') }}" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" class="form-control" value="{{ $data }}" name="position">
-                                <input type="hidden" value="{{ $year }}" name="election_year">
-                                <input type="hidden" class="form-control" value="{{request()->query('election_title') }}" name="election_title">
-                                <input type="hidden" value="{{ request()->query('id') }}" name="id">
-                                  <div class="modal-body">
-
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            First Name
-                                        </label>
-                                        <input required type="text" class="form-control" placeholder="Candidate First Name" name="first_name">
-                                    </div>
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Middle Name
-                                        </label>
-                                        <input type="text" class="form-control" placeholder="Candidate Middle Name" name="middle_name">
-                                    </div>
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Last Name
-                                        </label>
-                                        <input required type="text" class="form-control" placeholder="Candidate Last Name" name="last_name">
-                                    </div>
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Candidate Image
-                                        </label>
-                                        <input required type="file" class="form-control" name="candidate_image">
-                                    </div>
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Certificate of Candidacy
-                                        </label>
-                                        <input type="file" class="form-control" name="cert_of_candidacy">
-                                    </div>
-                                    
-                                    @if(request()->query('required') === 'Yes')
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Candidate Party-list
-                                        </label>
-                                        <select class="form-control" name="partylist" required>
-                                            @foreach($partylist as $partylists)
-                                            <option value="{{ $partylists->partylist }}"> {{ $partylists->partylist }} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @else
-
-                                        <input type="hidden" value="no" name="partylist">
-
-                                    @endif
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                  </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Add {{ $data }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{{ route('add.candidate') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" class="form-control" value="{{ $data }}" name="position">
+                <input type="hidden" value="{{ $year }}" name="election_year">
+                <input type="hidden" class="form-control" value="{{ request()->query('election_title') }}" name="election_title">
+                <input type="hidden" value="{{ request()->query('id') }}" name="id">
+                <div class="modal-body">
+                    <div class="my-2">
+                        <label class="font-weight-bold">First Name<span style="color: red;">*</span></label>
+                        <input required type="text" class="form-control" placeholder="Candidate First Name" name="first_name">
+                    </div>
+                    <div class="my-2">
+                        <label class="font-weight-bold">Middle Initial</label>
+                        <input type="text" class="form-control" placeholder="Candidate Middle Name" name="middle_name">
+                    </div>
+                    <div class="my-2">
+                        <label class="font-weight-bold">Last Name<span style="color: red;">*</span></label>
+                        <input required type="text" class="form-control" placeholder="Candidate Last Name" name="last_name">
+                    </div>
+                    <div class="my-2">
+                        <label class="font-weight-bold">Candidate Image<span style="color: red;">*</span></label>
+                        <input required type="file" class="form-control" name="candidate_image">
+                    </div>
+                    <div class="my-2">
+                        <label class="font-weight-bold">Certificate of Candidacy</label>
+                        <input type="file" class="form-control" name="cert_of_candidacy">
+                    </div>
+                    <div class="my-2">
+                        <label class="font-weight-bold">Candidate Party-list</label>
+                        <select class="form-control" name="partylist">
+                            <option value="no">No Party-list</option>
+                            @foreach($partylist as $partylists)
+                            <option value="{{ $partylists->partylist }}">{{ $partylists->partylist }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
                         <div class="card p-3">
                             
@@ -160,10 +171,70 @@
                                                 </a>
 
                                             </td>
-                                            <td>{{ $key->last_name}}, {{ $key->first_name}}, {{ $key->middle_name}}</td>
+                                            <td>{{ $key->last_name}}, {{ $key->first_name}} {{ $key->middle_name}}</td>
                                             <td>{{ $key->position }}</td>
+
                                             <td>
-                                                <a href="{{ route('subadmin.action.delete.candidates', [ 'id' => $key->id ]) }}" class="btn btn-danger btn-sm" title="delete">
+                                            <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#update{{$key->id}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="update{{$key->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Candidate Information</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                        <form method="post" action="{{route('update.candidate')}}">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $key->id }}" name="id">
+                                                            <input type="hidden" value="votingcandidates" name="table">
+                                                            <div class="modal-body">
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left ">
+                                                                    First Name<span style="color: red;">*</span>
+                                                                    </div>
+                                                                    <input required value="{{$key->first_name}}" type="text" class="form-control" placeholder="Candidate First Name" name="first_name" required>
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                    Middle Initial
+                                                                    </div>
+                                                                    <input value="{{$key->middle_name}}" type="text" class="form-control" placeholder="Candidate Middle Name" name="middle_name">
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                    Last Name<span style="color: red;">*</span>
+                                                                    </div>
+                                                                    <input required value="{{$key->last_name}}" type="text" class="form-control" placeholder="Candidate Last Name" name="last_name" required>
+                                                                </div>
+
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                        Candidate Image<span style="color: red;">*</span>
+                                                                    </div>
+                                                                    <input required value="{{$key->candidate_image}}" type="file" class="form-control" name="candidate_image" required>
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                        Certificate of Candidacy
+                                                                    </div>
+                                                                    <input value="{{$key->cert_of_candidacy}}" type="file" class="form-control" name="cert_of_candidacy">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                
+                                                </div>
+                                                <a href="{{ route('subadmin.delete.candidate', [ 'id' => $key->id ]) }}" class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
@@ -215,6 +286,12 @@
 <script type="text/javascript">     
     new DataTable('#example');
 </script>
+<script>
+        document.getElementById('howToAddPositionBtn').addEventListener('click', function () {
+            const instructionsCard = document.getElementById('instructionsCard');
+            instructionsCard.style.display = instructionsCard.style.display === 'none' ? 'block' : 'none';
+        });
+    </script>
 
 </body>
 

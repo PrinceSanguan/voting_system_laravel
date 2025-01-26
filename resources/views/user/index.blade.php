@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nexus' E-Voting</title>
+    <title>EleVote</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     @include('user.styles')
@@ -36,7 +36,7 @@
 
             <div class="col-lg-6 col-12 mt-5 d-none" id="realtime_votes">
                 <div class="card p-5 shadow-lg border-0 border-top border-5 border-dark mb-5">
-                    <div class="fw-bold mb-2 fs-5">Real-Time Voting Results:</div>
+                    <div class="fw-bold mb-2 fs-5">Voting Results:</div>
                     <div id="realtime-result">
                         <p class="text-danger">Loading Results Please Wait....</p>
                     </div>
@@ -51,7 +51,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Your Votes</h5>
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Your Votes. You can Only Vote Once!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="confirm-submit">Confirm Vote</button>
+                    <button type="submit" class="btn btn-primary" id="confirm-submit">Vote</button>
                 </div>
                 </form>
             </div>
@@ -136,42 +136,45 @@
             };
 
             const renderPosition = () => {
-                const positionsContainer = document.getElementById('positions-container');
-                positionsContainer.innerHTML = ''; // Clear the previous position
+    const positionsContainer = document.getElementById('positions-container');
+    positionsContainer.innerHTML = ''; // Clear the previous position
 
-                if (positionsData.length > 0) {
-                    const [position, candidates] = positionsData[currentPositionIndex];
+    if (positionsData.length > 0) {
+        const [position, candidates] = positionsData[currentPositionIndex];
 
-                    let positionHtml = `<div class="col-lg-12 mt-5">
-                                        <div class="card p-lg-5 p-1 shadow-lg border-0 border-top border-5 border-dark mb-5">
-                                            <h3 class="fw-bold">${position}</h3>`;
+        let positionHtml = `<div class="col-lg-12 mt-5">
+                            <div class="card p-lg-5 p-1 shadow-lg border-0 border-top border-5 border-dark mb-5">
+                                <h3 class="fw-bold">${position}</h3>`;
 
-                    candidates.forEach(candidate => {
-                        positionHtml += `
-                            <ul class="my-2">
-                                <li class="mb-4">PartyList: ${candidate.partylist ? candidate.partylist : 'Independent'}</li>
-                                <li class="d-block">
-                                    <a href="{{ asset('images/${candidate.candidate_image}') }}" class="text-decoration-none">
-                                        <img class="rounded-2" src="{{ asset('images/${candidate.candidate_image}') }}" height="100px" width="100px" alt="${candidate.first_name}">
-                                    </a>
-                                    <div class="form-check border border-1 py-2 mt-3">
-                                        <input class="form-check-input mx-2" type="radio" name="${position}" value="${candidate.id}" required>
-                                        <label class="form-check-label">
-                                            ${candidate.first_name} ${candidate.last_name}
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>`;
-                    });
+        candidates.forEach(candidate => {
+            const isSelected = votes[position]?.id == candidate.id ? 'checked' : ''; // Check if already selected
+            positionHtml += `
+                <ul class="my-2">
+                    <li class="mb-4">PartyList: ${candidate.partylist ? candidate.partylist : 'Independent'}</li>
+                    <li class="d-block">
+                        <a href="{{ asset('images/${candidate.candidate_image}') }}" class="text-decoration-none">
+                            <img class="rounded-2" src="{{ asset('images/${candidate.candidate_image}') }}" height="100px" width="100px" alt="${candidate.first_name}">
+                        </a>
+                        <div class="form-check border border-1 py-2 mt-3">
+                            <input class="form-check-input mx-2" type="radio" name="${position}" value="${candidate.id}" ${isSelected} required>
+                            <label class="form-check-label">
+                                ${candidate.first_name} ${candidate.last_name}
+                            </label>
+                        </div>
+                    </li>
+                </ul>`;
+        });
 
-                    positionHtml += `</div></div>`;
+        positionHtml += `</div></div>`;
 
-                    positionsContainer.innerHTML = positionHtml;
+        positionsContainer.innerHTML = positionHtml;
 
-                    // Update button visibility based on current position
-                    updateButtonVisibility();
-                }
-            };
+        // Update button visibility based on current position
+        updateButtonVisibility();
+    }
+};
+
+            
 
             // Function to update button visibility based on the current position
             const updateButtonVisibility = () => {
@@ -263,6 +266,7 @@
 
             // Render the real-time voting results
             for (const [position, candidates] of Object.entries(result.data)) {
+              candidates.sort((a, b) => (b.vote || 0) - (a.vote || 0));
               let positionHtml = `<h4 class="fw-bold">${position}</h4>`;
 
               candidates.forEach(candidate => {
@@ -276,7 +280,7 @@
                   <div class="my-3">
                     <span class="text-secondary m">
                     <i class="fa-regular fa-user fa-2x text-danger"></i>
-                      Unknown (${candidate.vote == null ? 0 : percent}% vote percentage)
+                      Unknown (${candidate.vote == null ? 0 : percent}% vote)
                     </span>
                     <div class="progress mt-1" style="height: 30px;">
                       <div 

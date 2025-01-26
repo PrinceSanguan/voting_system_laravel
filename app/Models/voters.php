@@ -24,6 +24,7 @@ class voters extends Model
         'phone_number',
         'organization',
         'status',
+        'voted',
         'otp'
 
     ];

@@ -36,18 +36,45 @@
                                 <li class="breadcrumb-item active">{{ $label }}</li>
                             </ol>
                         </div>
-                        <hr class="border-light container-m--x my-0">
+                        <div>
+                        <div>
+                            <!-- HOW TO ADD POSITION Button -->
+                            <button type="button" class="btn btn-info my-3" id="howToAddPositionBtn">
+    HOW TO ADD PARTYLIST
+</button>
 
-                        @if(session()->has('response'))
-                            <div class="alert mt-3 {{ session()->get('response') == 1 ? 'alert-primary' : 'alert-danger' }} alert-dismissible fade show">
+<div id="instructionsCard" class="card mt-3"  style="display: none;">
+    <div class="card-header bg-primary text-white style" >
+        <strong>How to Add, Update, & Delete Partylist</strong>
+    </div>
+    <div class="card-body">
+        <p>
+            <span style="color: blue;"><strong>ADD:</strong></span> Click the "+ADD PARTYLIST" button.
+        </p>
+        <p>
+            <span style="color: green;"><strong>UPDATE:</strong></span> Click the "green pen icon" in the Action Table.
+        </p>
+        <p>
+            <span style="color: red;"><strong>DELETE:</strong></span> Click the "red trash icon" in the Action Table.
+        </p>
+
+                        </div>
+                        </div>
+</div>
+            @if(session()->has('response'))
+                            <div class="alert {{ session()->get('response') == 1 ? 'alert-primary' : 'alert-danger' }} alert-dismissible fade show">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
-                                {{ session()->get('response') == 1 ? session()->get('success') : session()->get('error') }}
+                                {{ session('message') }}
                             </div>
                         @endif
+
+
+
 
                         <button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#exampleModal">
                           <i class="fa fa-plus"></i> Add {{ $label }}
                         </button>
+                        
 
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -65,13 +92,13 @@
                                 @csrf
                                   <div class="modal-body">
                                         <label class="font-weight-bold">
-                                            Party List
+                                            Party List<span style="color: red;">*</span>
                                         </label>
                                         <input type="text" class="form-control" placeholder="Position for Candidates" name="partylist">
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                   </div>
                               </form>
                             </div>
@@ -98,12 +125,43 @@
                                         <td  class="text-center">{{ $count }}</td>
                                         <td  class="text-center">{{ $key->partylist }}</td>
                                         <td  class="text-center">
-                                            <a href="" class="btn btn-success btn-sm" title="view members">
-                                                <i class="fa fa-eye"></i>
+                                        <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#update{{$key->id}}">
+                                                <i class="fa fa-edit"></i>
                                             </a>
-                                            <a href="{{ route('subadmin.action.delete', [ 'id' => $key->id ]) }}" class="btn btn-danger btn-sm" title="Delete">
+                                            <a href="{{ route('action.delete.partylist', [ 'id' => $key->id ]) }}" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-trash"></i>
                                             </a>
+                                            
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="update{{$key->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Partylist</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                        <form method="post" action="{{route('update.partylist')}}">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $key->id }}" name="id">
+                                                            <input type="hidden" value="votingcomponents" name="table">
+                                                            <div class="modal-body">
+                                                                    <div class="text-left font-weight-bold">
+                                                                        Party List<span style="color: red;">*</span>
+                                                                    </div>
+                                                                    <input value="{{ $key->partylist }}" type="text" class="form-control" placeholder="Position for Candidates" name="partylist">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            
                                         </td>
                                     </tr>
 
@@ -140,6 +198,12 @@
     <!-- Core scripts -->
 @include('subadmin.files.scripts')
 @include('subadmin.files.datatablejs')
+<script>
+        document.getElementById('howToAddPositionBtn').addEventListener('click', function () {
+            const instructionsCard = document.getElementById('instructionsCard');
+            instructionsCard.style.display = instructionsCard.style.display === 'none' ? 'block' : 'none';
+        });
+    </script>
 </body>
 
 </html>

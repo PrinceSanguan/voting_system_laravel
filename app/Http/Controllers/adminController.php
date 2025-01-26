@@ -54,7 +54,7 @@ class adminController extends Controller
                 return back()->with([
 
                     'response' => 1,
-                    'message' => 'Account Created'
+                    'message' => 'Organization Account Created'
 
                 ]);
 
@@ -86,7 +86,42 @@ class adminController extends Controller
         }
 
     }
+    
 
+   
+    public function admin_update_orgaccount(Request $request)
+{
+    user::where('id', $request->id)->update([
+        'Organization' => $request->Organization,
+        'name' => $request->name,
+        'role' => $request->role,
+        'age' => $request->age,
+        'gender' => $request->gender,
+        'Designation' => 'Subadmin',
+        'Status' => 1,
+        'Organization' => $request->organization
+        
+    ]);
+    return back()->with([
+        'response' => 1,
+        'message' => 'Organization Account update Successfully'
+    ]);
+    
+}
+
+    public function admin_delete_orgaccount(Request $request)
+    {
+
+        {
+            if (User::where('id', $request->id)->delete()) {
+                return back()->with ([
+                    'response' => 2,
+                    'message' => 'Organization Account Removed Successfully'
+                ]);
+            }
+        }
+    }
+   
     public function admin_add_organization(Request $request){
 
         try {
@@ -133,10 +168,27 @@ class adminController extends Controller
 
     }
 
+    public function admin_update_organization(Request $request)
+{
+
+    
+        organizations::where('id', $request->id)->update([
+            'Organization' => $request->organization,
+            'program_course' => $request->program_course
+        ]);
+        return back()->with([
+            'response' => 1,
+            'message' => 'Organization updated successfully'
+        ]);
+        
+    }
+    
+    
     public function view_result(Request $request){
 
         // Retrieve positions for the current organization
-        $positions = votingcomponents::select('position')
+        $positions = votingcomponents::select('position' )
+            
             ->where('organization', $request->organization)
             ->where('status', 3)
             ->get();
@@ -199,11 +251,25 @@ class adminController extends Controller
         DB::table($table)->where('id', $request->id)->delete();
         return back()->with([
 
-            'response' => 1,
-            'message' => 'User Account Removed'
+            'response' => 2,
+            'message' => 'Account Removed Successfully'
 
         ]);
+    }
+        public function action_delete_organization(Request $request){
 
+            {
+                if (organizations::where('id', $request->id)->delete()) {
+                    return back()->with ([
+                        'response' => 2,
+                        'message' => 'Organization Removed Successfully'
+                    ]);
+                }
+            }
+        }
     }
 
-}
+    
+    
+
+

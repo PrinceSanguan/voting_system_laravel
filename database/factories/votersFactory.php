@@ -19,9 +19,9 @@ class VotersFactory extends Factory
         return [
             'device_id' => $this->faker->uuid, // Random unique identifier for the device
             'email' => $this->faker->unique()->safeEmail, // Unique email
-            'pin' => Crypt::encryptString('1234'), // Random 4-digit PIN
+            'pin' => Crypt::encryptString('12345678'), // Random 8-digit PIN    
             'first_name' => $this->faker->firstName, // Random first name
-            'middle_name' => $this->faker->lastName, // Placeholder for middle name
+            'middle_name' => $this->faker->middleName//Pceholder for middle name
             'last_name' => $this->faker->lastName, // Random last name
             'age' => $this->faker->numberBetween(18, 60), // Random age within a range
             'gender' => $this->faker->randomElement(['Male', 'Female']), // Random gender
@@ -30,6 +30,7 @@ class VotersFactory extends Factory
             'address' => $this->faker->address, // Random address
             'phone_number' => $this->faker->phoneNumber, // Random phone number
             'organization' => 'CSC', // Random organization name
+            
             'status' => 'registered', // Random status
         ];
     }

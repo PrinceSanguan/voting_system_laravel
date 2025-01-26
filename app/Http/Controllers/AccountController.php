@@ -17,27 +17,52 @@ use Illuminate\Support\Facades\Http;
 
 class AccountCOntroller extends Controller
 {
-    public function changepass(Request $request){
-        // dd($request->all());
-
-        $user = User::where('id', $request->id)->first();
-
-        if ($user && $request->password == Crypt::decryptString($user->pin)) {
-            User::where('id', $request->id)->update([
-                'pin' => Crypt::encryptString($request->newpassword)
-            ]);
-            return back()->with([
-                'changed' => 1,
-                'changed_message' => 'Password Changed'
-            ]);
-        }else{
+    public function changepass(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'password' => 'required|string',
+            'newpassword' => 'required|string|min:8|digits:8|different:password', // Ensure new password is 8 numeric digits
+        ]);
+    
+        // Find the user by ID
+        $user = User::find($request->id);
+    
+        if (!$user) {
             return back()->with([
                 'changed' => 2,
-                'changed_message' => 'Incorrect old password, please try again'
+                'changed_message' => 'User not found.',
             ]);
         }
-
+    
+        // Verify the old password
+        try {
+            $storedPassword = Crypt::decryptString($user->pin);
+            if ($request->password !== $storedPassword) {
+                return back()->with([
+                    'changed' => 2,
+                    'changed_message' => 'Incorrect old password, please try again.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Handle decryption errors
+            return back()->with([
+                'changed' => 2,
+                'changed_message' => 'Unable to verify the current password. Please contact support.',
+            ]);
+        }
+    
+        // Update with the new encrypted password
+        $user->pin = Crypt::encryptString($request->newpassword);
+        $user->save();
+    
+        return back()->with([
+            'changed' => 1,
+            'changed_message' => 'Password changed successfully!',
+        ]);
     }
+    
     
     public function reg_admin(Request $request){
 
@@ -104,7 +129,7 @@ class AccountCOntroller extends Controller
         }else{
             return back()->with([
                 'response' => 2,
-                'message' => 'Unauthorized designation'
+                'message' => 'Incorrect Username or PIN'
             ]);
         }
     }
@@ -235,7 +260,7 @@ class AccountCOntroller extends Controller
         if (!$user) {
             return back()->with([
                 'response' => 2,
-                'message' => 'Incorrect email or password'
+                'message' => 'Unauthorized or Incorrect username or password'
             ]);
         }
 

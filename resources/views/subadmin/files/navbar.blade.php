@@ -3,7 +3,8 @@
     <!-- Brand demo (see assets/css/demo/demo.css) -->
     <a href="index.html" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
         <span class="app-brand-logo demo">
-            <img src="assets/img/logo-dark.png" alt="Brand Logo" class="img-fluid">
+            <img src="{{ asset('Elevotelogo.png') }}" width="50" height="50" class="rounded-circle" alt=""> EleVote
+            
         </span>
         <span class="app-brand-text demo font-weight-normal ml-2">Bhumlu</span>
     </a>
@@ -23,15 +24,7 @@
         <!-- Divider -->
         <hr class="d-lg-none w-100 my-2">
 
-        <div class="navbar-nav align-items-lg-center">
-            <!-- Search -->
-            <label class="nav-item navbar-text navbar-search-box p-0 active">
-                <i class="feather icon-search navbar-icon align-middle"></i>
-                <span class="navbar-search-input pl-2">
-                    <input type="text" class="form-control navbar-text mx-2" placeholder="Search...">
-                </span>
-            </label>
-        </div>
+        
 
         <div class="navbar-nav align-items-lg-center ml-auto">
             <!-- Divider -->
@@ -71,15 +64,15 @@
                     <input type="hidden" name="id" value="{{ session()->get('id') }}">
                     <div class="modal-body">
                         <div class="my-3">
-                            <span>Old PIN</span>
+                        Old PIN<span style="color: red;">*</span>
                             <input type="password" name="password" placeholder="Enter your old password" id="" class="form-control" required>
                         </div>
                         <div class="my-3">
-                            <span>New PIN</span>
+                        New PIN<span style="color: red;">*</span>
                             <input type="password" name="newpassword" placeholder="Enter your new password" id="password" class="form-control" required>
                         </div>
                         <div class="my-3">
-                            <span>Confirm PIN</span>
+                        Confirm PIN<span style="color: red;">*</span>
                             <input id="confirmpass" onChange="handleConfirmation(this.value)" type="password" placeholder="Confirm password" id="" class="form-control" required>
                         </div>
                     </div>

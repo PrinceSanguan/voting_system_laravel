@@ -2,7 +2,7 @@
                 <!-- Brand demo (see assets/css/demo/demo.css) -->
                 <div class="app-brand demo">
                     <span class="app-brand-logo demo">
-                        <img src="{{asset('assets/img/logo.png')}}" alt="Brand Logo" class="img-fluid">
+                        <img src="{{ asset('Elevotelogo.png') }}" width="50" height="50" class="rounded-circle" alt="">
                     </span>
                     <a href="index.html" class="app-brand-text demo sidenav-text font-weight-normal ml-2">EleVote</a>
                     <a href="javascript:" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
@@ -24,7 +24,7 @@
 
                     <!-- Layouts -->
                     <li class="sidenav-divider mb-1"></li>
-                    <li class="sidenav-header small font-weight-semibold">Components</li>
+                    
                     <li class="sidenav-item">
                         <a href="{{route('admin.organization')}}" class="sidenav-link">
                             <i class="sidenav-icon feather icon-user-check"></i>
@@ -46,7 +46,7 @@
                     </li>
                     <!-- Forms & Tables -->
                     <li class="sidenav-divider mb-1"></li>
-                    <li class="sidenav-header small font-weight-semibold">User Account </li>
+                    
                     <li class="sidenav-item">
                         <a href="javascript:" class="sidenav-link sidenav-toggle">
                             <i class="sidenav-icon feather icon-align-justify"></i>
@@ -62,7 +62,7 @@
                             <li class="sidenav-item">
                                 <a href="{{ route('admin.update-account') }}" class="sidenav-link">
                                     <i class="sidenav-icon feather icon-chevrons-right"></i>
-                                    <div>Update Account</div>
+                                    <div>My Account</div>
                                 </a>
                             </li>
                         </ul>

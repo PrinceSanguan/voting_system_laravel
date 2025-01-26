@@ -53,6 +53,7 @@ Route::get('subadmin/change-account', [pageController::class, 'subadmin_change_a
 
 Route::get('subadmin/voters-turnout', [pageController::class, 'subadmin_voters_turnout'])
     ->name('subadmin.voters-turnout')->middleware(SubadminIsValid::class);
+    Route::get('/election/{electionTitle}/{electionYear}', [ElectionController::class, 'showElectionData']);
 // end
 
 // pageController admin
@@ -85,17 +86,31 @@ Route::post('verify-otp', [subadminController::class, 'verify_otp'])->name('veri
 // subadminController
 Route::post('add-position', [subadminController::class, 'subadmin_add_position'])
     ->name('add.position');
+    
 Route::post('update-position', [subadminController::class, 'subadmin_update_position'])
-->name('update.position');
+    ->name('action.update.position');
+Route::get('subadmin/action/delete-position', [subadminController::class, 'action_delete_position'])
+    ->name('action.delete.position')->middleware(SubadminIsValid::class);
 
 Route::post('add-partylist', [subadminController::class, 'subadmin_add_partylist'])
     ->name('add.partylist');
+Route::post('update-partylist', [subadminController::class, 'subadmin_update_partylist'])
+    ->name('update.partylist');
+Route::get('subadmin/action/delete-partylist', [subadminController::class, 'subadmin_delete_partylist'])
+    ->name('action.delete.partylist')->middleware(SubadminIsValid::class);
 
 Route::post('add-candidate/', [subadminController::class, 'subadmin_add_candidate'])
     ->name('add.candidate');
+    Route::post('update-candidate', [subadminController::class, 'subadmin_update_candidate'])
+    ->name('update.candidate');
+Route::get('subadmin/action/delete-candidate', [subadminController::class, 'subadmin_delete_candidate'])
+    ->name('subadmin.delete.candidate')->middleware(SubadminIsValid::class);
+
 
 Route::post('add-voters', [subadminController::class, 'subadmin_add_voter'])
     ->name('add.voter');
+Route::post('update-voter', [subadminController::class, 'subadmin_update_voter'])
+    ->name('update.voter');
 
 Route::post('add-election', [subadminController::class, 'subadmin_add_election'])
     ->name('add.election');
@@ -103,7 +118,10 @@ Route::post('add-election', [subadminController::class, 'subadmin_add_election']
 Route::get('subadmin/action/delete', [subadminController::class, 'subadmin_action_delete'])
     ->name('subadmin.action.delete')->middleware(SubadminIsValid::class);
 
-Route::get('subadmin/delete', [subadminController::class, 'action_delete_voters'])
+Route::post('update-election', [subadminController::class, 'subadmin_update_election'])
+    ->name('update.election');
+
+Route::get('subadmin/action/delete-voters', [subadminController::class, 'action_delete_voters'])
     ->name('action.delete.voters')->middleware(SubadminIsValid::class);
 
 Route::get('subadmin/action/delete/candidates', [subadminController::class, 'subadmin_action_delete_candidates'])
@@ -120,14 +138,26 @@ Route::get('subadmin/view-result', [subadminController::class, 'view_result'])
 
 Route::get('subadmin/print-report', [subadminController::class, 'print'])
     ->middleware(SubadminIsValid::class);
-// end
+
 
 // adminController
 Route::post('add-organization', [adminController::class, 'admin_add_organization'])
     ->name('add.organization');
 
+Route::post('administrator/update-organization', [adminController::class, 'admin_update_organization'])
+    ->name('admin.action.update.organization');
+
+Route::get('administrator/action/delete-organization', [subadminController::class, 'admin_delete_organization'])
+    ->name('action.delete.organization')->middleware(SubadminIsValid::class);
+
 Route::post('add-organization-account', [adminController::class, 'admin_organization_account'])
     ->name('add.organization.account');
+
+Route::post('administrator/update-organizationccount', [adminController::class, 'admin_update_orgaccount'])
+    ->name('admin.action.update.orgaccount');
+
+Route::get('administrator/action/delete-organizationaccount', [adminController::class, 'admin_delete_orgaccount'])
+    ->name('admin.action.delete.orgaccount');
 
 Route::get('administrator/view-result', [adminController::class, 'view_result'])
     ->middleware(hasfingerprint::class);
@@ -136,7 +166,11 @@ Route::post('administrator/updatemyaccount', [adminController::class, 'update_ac
     ->name('admin-update-mydata');
 
 Route::get('administrator/action-delete', [adminController::class, 'action_delete'])
-->name('admin.action.delete');
+    ->name('admin.action.delete');
+
+Route::get('administrator/action/delete/organization', [adminController::class, 'action_delete_organization'])
+    ->name('action.delete.organization');
+
 // end
 
 // userController

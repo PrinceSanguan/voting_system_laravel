@@ -14,6 +14,7 @@ class votingcomponents extends Model
         'candidate',
         'partylist',
         'position',
+        'maxvote',
         'organization',
         'status'
     ];

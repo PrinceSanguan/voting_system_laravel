@@ -44,11 +44,11 @@
                                         No. of Position
                                     </div>
                                     <div class="card-body text-center">
-                                        <h3>{{ $data["position"] }}</h3>
+                                    <h3 id="position" style="color: black;">{{ $data["position"] }}</h3>
                                     </div>
                                     <div class="card-footer py-1 px-0 text-center bg-success text-danger">
                                         <a href="{{ route('subadmin.position') }}">
-                                            More Info >
+                                        <span style="color: gray;">More Info ></span>
                                         </a>
                                     </div>
                                 </div>
@@ -59,11 +59,11 @@
                                         No. of Candidate
                                     </div>
                                     <div class="card-body text-center">
-                                        <h3>{{ $data["candidate"] }}</h3>
+                                    <h3 id="candidate" style="color: black;">{{ $data["candidate"] }}</h3>
                                     </div>
                                     <div class="card-footer py-1 px-0 text-center bg-success text-danger">
                                         <a href="{{route('subadmin.election_type')}}">
-                                            More Info >
+                                        <span style="color: gray;">More Info ></span>
                                         </a>
                                     </div>
                                 </div>
@@ -74,11 +74,11 @@
                                         No. of Partylist
                                     </div>
                                     <div class="card-body text-center">
-                                        <h3>{{ $data["partylist"] }}</h3>
+                                    <h3 id="partylist" style="color: black;">{{ $data["partylist"] }}</h3>
                                     </div>
                                     <div class="card-footer py-1 px-0 text-center bg-success text-danger">
                                         <a href="{{ route('subadmin.partylist') }}">
-                                            More Info >
+                                        <span style="color: gray;">More Info ></span>
                                         </a>
                                     </div>
                                 </div>
@@ -87,35 +87,28 @@
                                 <div class="card">
                                     <div class="card-header py-2 bg-dark text-white d-flex align-items-center justify-content-between">
                                         <div>
-                                          No. of Voter 
-                                
+                                          No. of Voter
                                     </div>
-                                        <select class="form-control border-0 w-auto" onchange="handleChange(this.value)"> 
-                                            <option value="total">Total</option>
-                                            <option value="voted">Voted</option>
-                                            <option value="notvoted">Unvoted</option>
-                                        </select> 
+                                       
                                     </div>
                                     <div class="card-body text-center">
-                                        <h3 id="voter">{{ $data["voters"] }}</h3>
+                                        <h3 id="voter" style="color: black;">{{ $data["voters"] }}</h3>
                                     </div>
-                                    <div class="card-footer p-0 px-0 text-center bg-success text-danger">
-                                        <a href="{{ route('subadmin.partylist') }}">
-                                            More Info > 
+                                    <div class="card-footer py-1 px-0 text-center bg-success text-danger">
+                                        <a href="{{ route('subadmin.voter-list') }}">
+                                        <span style="color: gray;">More Info ></span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12 mt-5">
-                                <div class="card">
-                                    <div class="card-header bg-dark py-2 text-white">Live Result</div>
-                                    <div class="card-body">
-                                        <div id="chart"></div>
-                                        <div id="no_election" class="d-none alert alert-danger text-center">
-
-                                        </div>
+                           
+                            </div>
+                            <div class="col-lg-12 col-12 mt-5" id="realtime_votes">
+                                <div class="card p-5 shadow-lg border-0 border-top border-5 border-dark mb-5">
+                                    <div class="fw-bold mb-2 fs-5"><strong>Voting Results:</strong></div>
+                                    <div id="realtime-result">
+                                        <p class="text-danger">Loading Results Please Wait....</p>
                                     </div>
-                                    <div class="card-footer bg-success py-2"></div>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +137,7 @@
     const handleChange = async (value) => {
         const org = '{{ session()->get("organization") }}';
         const url = `${ip}/api/voters?value=${value}&organization=${org}`;
-        
+
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -167,6 +160,7 @@
     const gatherData = async () => {
         try {
             const url = `${ip}/api/dashboardChart?organization={{ session()->get('organization') }}`;
+            console.log(url);
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`Network Connection Error: ${response.status}`);
@@ -270,7 +264,64 @@
     setInterval(gatherData, 3000); // Update every 10 seconds
 </script>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+    const realtime_result = async () => {
+        try {
+        const url = `${ip}/api/realtime_result?organization={{ session()->get('organization') }}&fingerprint={{ session()->get('id') }}`;
+        const response = await fetch(url);
+        console.log(url);
+        if (!response.ok) {
+            throw new Error(`Network Connection Error: ${response.status}`);
+        }
 
+        const result = await response.json();
+        console.log(result);
+        const resultsContainer = $('#realtime-result');
+        resultsContainer.empty();
+
+        // Render the real-time voting results
+        for (const [position, candidates] of Object.entries(result.data)) {
+            candidates.sort((a, b) => (b.vote || 0) - (a.vote || 0));
+            let positionHtml = `<h4 class="fw-bold">${position}</h4>`;
+
+            candidates.forEach(candidate => {
+
+            let percent = (candidate.vote / result.voters) * 100;
+                percent = percent.toFixed(2);
+
+
+            let percentage = candidate.votes_percentage || 0; // Assume there's a percentage value in the API
+            positionHtml += `
+                <div class="my-3">
+                <span class="text-secondary">
+                <img width="40p" height="50" src="{{ asset('images/${candidate.candidate_image}') }}" />
+                ${candidate.last_name},${candidate.first_name} (${candidate.vote == null ? 0 : percent}% vote )
+                </span>
+                <div class="progress mt-1" style="height: 30px;">
+                    <div
+                    class="progress-bar bg-success" role="progressbar"
+                    style="width: ${percent == null ? 0 : percent}%"
+                    aria-valuenow="${percent == null ? 0 : percent}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    >${candidate.vote == null ? 0 : percent}</div>
+                </div>
+                </div>`;
+            });
+
+            // Append the position results to the container
+            resultsContainer.append(positionHtml);
+        }
+        } catch (e) {
+        console.error(`Error Message: ${e}`);
+        }
+    }
+
+    // Fetch the results every 5 seconds
+    setInterval(realtime_result, 1000);
+    });
+</script>
 
 
 

@@ -97,28 +97,21 @@
                     <div class="row">
                         <div class="my-4 col-lg-6">
                             <label class="font-weight-bold">Name: </label>
-                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Name" type="text" value="${name}" name="name">
+                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Name" type="text" value="${name}" name="name" readonly>
                         </div>
                         <div class="my-4 col-lg-6">
                             <label class="font-weight-bold">Role: </label>
-                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Role" type="text" value="${role}" name="role">
+                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Role" type="text" value="${role}" name="role" readonly>
                         </div>
 
-                        <div class="my-4 col-lg-6">
-                            <label class="font-weight-bold">Age: </label>
-                            <input required class="form-control rounded-pill shadow-sm" type="text" placeholder="Update Your Age" value="${age}" name="age">
-                        </div>
+                        
 
                         <div class="my-4 col-lg-6">
                             <label class="font-weight-bold">Gender: </label>
-                            <select class="form-control" name="gender" required>
-                                ${genderOptions}
-                            </select>
+                            <input required class="form-control rounded-pill shadow-sm" type="text" placeholder="Update Your Age" value="${gender}" name="gender" readonly>
                         </div>
 
-                        <div class="my-4 col-lg-12 text-right">
-                            <button class="btn btn-primary col-3 py-2">Apply Changes</button>
-                        </div>
+                        
                     </div>
                 </div>
             `;

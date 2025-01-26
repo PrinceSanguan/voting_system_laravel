@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('organization')->nullable();
             $table->string('status')->nullable();
+          
             $table->string('otp')->nullable();
         });
     }

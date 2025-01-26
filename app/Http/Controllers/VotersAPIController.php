@@ -53,7 +53,7 @@ class VotersAPIController extends Controller
     }
 
     public function verifylogin(Request $request){
-
+        
         $exist= Voters::where('email', $request->email)->where('pin', $request->pin)->first();
         $exists= Voters::where('email', $request->email)->where('pin', $request->pin)->exists();
         
@@ -81,6 +81,7 @@ class VotersAPIController extends Controller
             'pin' => $request->pin,
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
             'age' => $request->age,
             'gender' => $request->gender,
             'course' => $request->course,

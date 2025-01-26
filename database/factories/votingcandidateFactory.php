@@ -18,7 +18,7 @@ class VotingCandidateFactory extends Factory
     {
         return [
             'first_name' => $this->faker->firstName,
-            'middle_name' => $this->faker->lastName, // Using lastName as a placeholder for middle name
+            'middle_name' => $this->faker->middleName, // Using lastName as a placeholder for middle name
             'last_name' => $this->faker->lastName,
             'partylist' => '',
             'position' => 'Secretary',

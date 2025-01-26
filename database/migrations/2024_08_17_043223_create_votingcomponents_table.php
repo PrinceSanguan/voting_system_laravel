@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('partylist')->nullable()->unique();
             $table->string('position')->nullable();
+            $table->int('maxvote')->nullable();
             $table->string('organization')->nullable();
             $table->string('status')->nullable();
         });

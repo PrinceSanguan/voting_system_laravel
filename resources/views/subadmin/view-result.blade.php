@@ -27,7 +27,7 @@
                             </ol>
                         </div>
                         <hr class="border-light container-m--x my-0">
-                        <div class="font-weight-bold my-3">Election Title: {{ $election_title }} for Year {{ $election_year }}</div>
+                        <div class="font-weight-bold my-3">{{ $election_title }} for {{ $election_year }}</div>
                         @if(session()->has('response'))
                             <div class="alert {{ session()->get('response') == 1 ? 'alert-success' : 'alert-danger' }}">
                                 {{ session()->get('message') }}
@@ -105,7 +105,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>First Name</th>
-                                            <th>Middle Name</th>
+                                            <th>Middle Initial</th>
                                             <th>Last Name</th>
                                             <th>Position</th>
                                             <th>Election Title</th>
@@ -170,13 +170,15 @@
 
                         </div>
                     </div>
+                    
 
                     @include('subadmin.files.footer')
-
+                        
                 </div>
 
             </div>
         </div>
+
         <div class="layout-overlay layout-sidenav-toggle"></div>
     </div>
 

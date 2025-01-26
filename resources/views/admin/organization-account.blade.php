@@ -62,7 +62,7 @@
 
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Organization
+                                        Organization<span style="color: red;">*</span>
                                         </label>
                                         <select class="form-control" name="organization" required>
                                             <option value="">Select Organization here..</option>
@@ -85,45 +85,49 @@
 
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Name
+                                        Full Name<span style="color: red;">*</span>
                                         </label>
                                         
-                                        <input required type="text" class="form-control" placeholder="" name="name">
+                                        <input required type="text" class="form-control" placeholder="" name="name" required>
                                     </div>
 
 
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Role/Position
+                                        Role/Position<span style="color: red;">*</span>
                                         </label>
                                         
-                                        <input required type="text" class="form-control" placeholder="" name="role">
+                                        <input required type="text" class="form-control" placeholder="" name="role" required>
                                     </div>
+                                    
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Age
+                                        Gender<span style="color: red;">*</span> 
                                         </label>
                                         
-                                        <input required type="text" class="form-control" placeholder="" name="age">
+                                        <input required type="text" class="form-control" placeholder="" name="gender"required>
                                     </div>
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Gender
+                                        Username<span style="color: red;">*</span> 
                                         </label>
-                                        
-                                        <input required type="text" class="form-control" placeholder="" name="gender">
+                                        <input required type="email" class="form-control" placeholder="" name="email" required>
                                     </div>
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Username
+                                        Pin<span style="color: red;">*</span> 
                                         </label>
-                                        <input required type="email" class="form-control" placeholder="" name="email">
-                                    </div>
-                                    <div class="my-2">
-                                        <label class="font-weight-bold">
-                                            Pin
-                                        </label>
-                                        <input required type="password" class="form-control" placeholder="" name="pin">
+                                        <input 
+                                            type="password" 
+                                            class="form-control" 
+                                            placeholder="Voter Pin" 
+                                            name="pin" 
+                                            value="{{ old('pin') }}" 
+                                            pattern="\d{8}" 
+                                            title="Voter Pin must be exactly 8 digits" 
+                                            minlength="8" 
+                                            maxlength="8" 
+                                            required>
                                     </div>
                                   </div>
                                   <div class="modal-footer">
@@ -134,7 +138,8 @@
                             </div>
                           </div>
                         </div>
-
+                        </dive>
+                       
                         <div class="card p-3">
                             
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -159,10 +164,105 @@
                                             <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#update{{$key->id}}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <a href="{{ route('admin.action.delete', [ 'table' => 'users', 'id' => $key->id ])}}" class="btn btn-sm btn-danger">
+                                            <a href="{{ route('admin.action.delete.orgaccount', [ 'table' => 'users', 'id' => $key->id ])}}" class="btn btn-sm btn-danger">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                        </td>
+                                            <!-- Modal -->
+                                            
+                                            <div class="modal fade" id="update{{$key->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Organization Account</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <form method="post" action="{{ route('admin.action.update.orgaccount') }}">
+                                                            @csrf
+                                                            <div class="modal-body">
+
+                                                            <div class="my-2">
+                                                                <label class="font-weight-bold text-left w-100">
+                                                                Organization<span style="color: red;">*</span>
+                                                                </label>
+                                                                <select class="form-control" name="organization" required>
+                                                                    <option value="">Select Organization here..</option>
+                                                                    @forelse($organization as $organizations)
+
+                                                                        <option value="{{ $organizations->organization }}">
+                                                                            {{ $organizations->organization }}
+                                                                        </option>
+
+                                                                    @empty
+
+                                                                        <option value="">
+                                                                            No data Found
+                                                                        </option>
+
+                                                                    @endforelse
+                                                                </select>
+                                                                <!-- <input type="text" class="form-control" placeholder="" name="organization"> -->
+                                                            </div>
+                                                                <div class="my-2">
+                                                                    <label class="font-weight-bold text-left w-100">
+                                                                Full Name<span style="color: red;">*</span>
+                                                                    </label>
+                                                                    
+                                                                    <input type="text" value="{{ $key->name }}" class="form-control" placeholder="Update Name" name="name" required>
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <label class="font-weight-bold text-left w-100">
+                                                                Role/Position<span style="color: red;">*</span>
+                                                                    </label>
+                                                                    
+                                                                    <input type="text" value="{{ $key->role }}" class="form-control" placeholder="Update Name" name="role" required>
+                                                                </div>
+                                                                
+                                                                <div class="my-2">
+                                                                    <label class="font-weight-bold text-left w-100">
+                                                                Gender<span style="color: red;">*</span>
+                                                                    </label>
+                                                                    
+                                                                    <input type="text" value="{{ $key->gender }}" class="form-control" placeholder="Update Name" name="gender" required>
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="my-2">
+                                                                <label class="font-weight-bold text-left w-100">
+                                                                Username<span style="color: red;">*</span>
+                                                                </label>
+                                                                <input type="email" value="{{$key->email}}" class="form-control" placeholder="Update email" name="email" required>
+                                                            </div>
+                                                            <div class="my-2">
+                                                                    <label class="font-weight-bold text-left w-100">
+                                                                Pin<span style="color: red;">*</span>
+                                                                    </label>
+                                                                    <input 
+                                                                    type="password" 
+                                                                    class="form-control" 
+                                                                    placeholder="Voter Pin" 
+                                                                    name="pin" 
+                                                                    value="{{ old('pin') }}" 
+                                                                    pattern="\d{8}" 
+                                                                    title="Voter Pin must be exactly 8 digits" 
+                                                                    minlength="8" 
+                                                                    maxlength="8" 
+                                                                    required>
+                                                                    
+                                                                    
+                                                                </div>
+                                                                
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                           
+                                            
                                     </tr>
                                     @php
                                         $count++
@@ -195,6 +295,28 @@
     <!-- Core scripts -->
 @include('admin.files.scripts')
 @include('subadmin.files.datatablejs')
+<script type="text/javascript">
+        // Initialize DataTable
+        new DataTable('#example');
+
+        // Reopen Modal on Validation Error
+        @if ($errors->any())
+            $(document).ready(function () {
+                $('#exampleModal').modal('show');
+            });
+        @endif
+
+        // Frontend PIN Validation
+        document.querySelector('form').addEventListener('submit', function(event) {
+    var pin = document.querySelector('[name="pin"]').value;
+
+    // Check if PIN is numeric and exactly 8 digits
+    if (!/^\d{8}$/.test(pin)) {
+        alert("Voter Pin must be exactly 8 numeric digits.");
+        event.preventDefault(); // Prevent form submission
+    }
+});
+    </script>
 </body>
 
 </html>

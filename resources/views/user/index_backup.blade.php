@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nexus' E-Voting</title>
+    <title>EleVote</title>
+    <link rel="icon" type="image/x-icon" href="{{asset('Elevotelogo.png')}}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     @include('user.styles')
@@ -28,7 +29,7 @@
           </form>
         <div class="col-lg-6 col-12">
           <div class="card p-5 shadow-lg border-0 border-top border-5 border-dark mb-5">
-            <div class="fw-bold mb-2 fs-5">Real-Time Voting Results:</div>
+            <div class="fw-bold mb-2 fs-5">Voting Results:</div>
             <div id="realtime-result">
               <p class="text-danger">Loading Results Please Wait....</p>
             </div>
@@ -43,52 +44,72 @@
       $(document).ready(function(){
 
         const fetchData = async () => {
-          try {
-            const url = `http://127.0.0.1:8000/api/voting_start?organization={{ session()->get('organization') }}&fingerprint={{ session()->get('user_fingerprint') }}`;
-            const response = await fetch(url);
+  try {
+    const url = `http://127.0.0.1:8000/api/voting_start?organization={{ session()->get('organization') }}&fingerprint={{ session()->get('user_fingerprint') }}`;
+    const response = await fetch(url);
 
-            if (!response.ok) {
-              throw new Error(`Network Connection Error: ${response.status}`);
-            }
+    if (!response.ok) {
+      throw new Error(`Network Connection Error: ${response.status}`);
+    }
 
-            const result = await response.json();
-            console.log(result);
+    const result = await response.json();
+    console.log(result);
 
-            // Container for all positions
-            const positionsContainer = document.getElementById('positions-container');
+    // Container for all positions
+    const positionsContainer = document.getElementById('positions-container');
 
-            // Categorize and render the candidates by position
-            for (const [position, candidates] of Object.entries(result.data)) {
-              let positionHtml = `<div class="col-lg-12">
-                                    <div class="card p-lg-5 p-1 shadow-lg border-0 border-top border-5 border-dark mb-5">
-                                      <h3 class="fw-bold">${position}</h3>`;
+    // Categorize and render the candidates by position
+    for (const [position, { candidates, maxVotes }] of Object.entries(result.data)) {
+      let positionHtml = `<div class="col-lg-12">
+                            <div class="card p-lg-5 p-1 shadow-lg border-0 border-top border-5 border-dark mb-5">
+                              <h3 class="fw-bold">${position} (Max Votes: ${maxVotes})</h3>`;
 
-              candidates.forEach(candidate => {
-                positionHtml += `
-                  <ul class="my-5">
-                    <li class="mb-4">PartyList: ${candidate.partylist ? candidate.partylist : 'Independent'}</li>
-                    <li class="d-block">
-                      <a href="{{ asset('images/${candidate.candidate_image}') }}" class="text-decoration-none">
-                        <img class="rounded-2" src="{{ asset('images/${candidate.candidate_image}') }}" height="100px" width="100px" alt="${candidate.first_name}">
-                      </a>
-                      <div class="form-check border border-1 p-2 mt-3">
-                        <input class="form-check-input mx-2" type="radio" name="${position}" value="${candidate.id}" required>
-                        <label class="form-check-label">
-                          ${candidate.first_name} ${candidate.last_name}
-                        </label>
-                      </div>
-                    </li>
-                  </ul>`;
-              });
+      candidates.forEach(candidate => {
+        positionHtml += `
+          <ul class="my-5">
+            <li class="mb-4">PartyList: ${candidate.partylist ? candidate.partylist : 'Independent'}</li>
+            <li class="d-block">
+              <a href="{{ asset('images/${candidate.candidate_image}') }}" class="text-decoration-none">
+                <img class="rounded-2" src="{{ asset('images/${candidate.candidate_image}') }}" height="100px" width="100px" alt="${candidate.first_name}">
+              </a>
+              <div class="form-check border border-1 p-2 mt-3">
+                <input class="form-check-input mx-2" type="radio" name="${position}" value="${candidate.id}" required>
+                <label class="form-check-label">
+                  ${candidate.first_name} ${candidate.last_name}
+                </label>
+              </div>
+            </li>
+          </ul>`;
+      });
 
-              positionHtml += `</div></div>`;
+      positionHtml += `</div></div>`;
 
-              // Append the position and its candidates to the container
-              positionsContainer.innerHTML += positionHtml;
-            }
+      // Append the position and its candidates to the container
+      positionsContainer.innerHTML += positionHtml;
+    }
 
-          } catch (e) {
-            console.error(`Error Message: ${e}`);
+    // Handle radio button selection with maxVotes
+    $(document).on('change', `input[name="${position}"]`, function () {
+    const positionVotes = votes[position] || [];
+    const candidateId = $(this).val();
+
+    if ($(this).is(':checked')) {
+        if (positionVotes.length < maxvote) {
+            positionVotes.push({ id: candidateId });
+            votes[position] = positionVotes;
+        } else {
+            $(this).prop('checked', false);
+            alert(`You can only select up to ${maxvote} candidates for ${position}.`);
+        }
+    } else {
+        votes[position] = positionVotes.filter(v => v.id != candidateId);
+    }
+});
+
+  } catch (e) {
+    console.error(`Error Message: ${e}`);
+
+
           }
         }
         setTimeout(fetchData, 3000);

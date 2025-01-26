@@ -40,7 +40,12 @@
                         <div class="row">
                             <div class="col-lg-6 mt-5">
                                 <div class="card">
-                                    <div class="card-header bg-dark py-2 text-white">Voter Turnout</div>
+                                <div class="card-header bg-dark py-2 text-white d-flex justify-content-between align-items-center">
+                                    <span>Voter Status</span>
+                                    
+                                </div>
+
+                               
                                     <div class="card-body">
                                         @if($response)
                                         <div id="chart"></div>
@@ -53,6 +58,7 @@
                                     <div class="card-footer bg-success py-2"></div>
                                 </div>
                             </div>
+                            
                             <div class="col-lg-6 mt-5">
                                 <div class="card">
                                     <div class="card-header bg-dark py-2 text-white">Votes By Gender</div>
@@ -130,32 +136,34 @@
     <!-- Core scripts -->
 @include('subadmin.files.scripts')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 @if($response)
 <script>
     var options = {
         series: [{{ $voter["voted"] }}, {{ $voter["notvoted"] }}],
         chart: {
-        width: 419,
-        type: 'pie',
-    },
-    labels: ['Voted', 'Not Voted'],
-    colors: ["blue", "red"],
-    responsive: [{
-        breakpoint: 480,
-        options: {
-        chart: {
-            width: 200
+            width: 419,
+            type: 'pie',
         },
-        legend: {
-            position: 'bottom'
-        }
-        }
-    }]
+        labels: ['Voted', 'Not Voted'],
+        colors: ["blue", "red"],
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
     };
 
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
 </script>
+
 <script>
     var options = {
         series: [{
@@ -175,7 +183,6 @@
                     y: {{ $voter["femalevoted"] }},
                     fillColor: 'red'
                 },
-                
                 {
                     x: 'Female not Vote',
                     y: {{ $voter["femalenotvoted"] }},
@@ -205,9 +212,12 @@
     chart.render();
 </script>
 @endif
+
+<!-- New script for showing and hiding tables -->
+
+
 <script>
     const modal = (result) => {
-        // Create the modal HTML dynamically
         const modalHTML = `
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -232,7 +242,6 @@
                                     <div class="fw-bold">Bped: ${result.course.bped}</div>
                                     <div class="fw-bold">Bsit: ${result.course.bsit}</div>
                                     <div class="fw-bold">Bshm: ${result.course.bshm}</div>
-
                                 </div>
                                 <div class="col-md-12 shadow p-2 my-3" style="border-left: 10px solid #4a4024; border-radius: 10px">
                                     <div class="fw-bold"><b>Votes by Year</b></div>
@@ -243,27 +252,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button onClick="window.location.reload()" class="btn btn-secondary">Close</button>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
         `;
 
-        // Append modal to the body
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // Initialize the modal with options to disable backdrop click and keyboard escape
         const exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-            backdrop: 'static', // Prevent closing when clicking outside the modal
-            keyboard: false     // Prevent closing with the ESC key
+            backdrop: 'static', 
+            keyboard: false     
         });
 
-        // Show the modal
         exampleModal.show();
 
-        // Reload page when modal is hidden
         document.getElementById('exampleModal').addEventListener('hidden.bs.modal', () => {
             document.getElementById('exampleModal').remove();
             window.location.reload();
@@ -278,7 +281,6 @@
             }
             const result = await response.json();
             modal(result);
-            console.log(result);
         } catch (error) {
             console.error(`Error Message: ${error}`);
         }
@@ -286,5 +288,6 @@
 </script>
 
 </body>
+
 
 </html>

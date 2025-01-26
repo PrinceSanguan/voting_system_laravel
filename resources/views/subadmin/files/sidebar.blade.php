@@ -2,7 +2,7 @@
                 <!-- Brand demo (see assets/css/demo/demo.css) -->
                 <div class="app-brand demo">
                     <span class="app-brand-logo demo">
-                        <img src="{{asset('assets/img/logo.png')}}" alt="Brand Logo" class="img-fluid">
+                        <img src="{{ asset('Elevotelogo.png') }}" width="50" height="50" class="rounded-circle" alt="">
                     </span>
                     <a href="index.html" class="app-brand-text demo sidenav-text font-weight-normal ml-2">EleVote</a>
                     <a href="javascript:" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
@@ -25,10 +25,17 @@
                     <!-- Layouts -->
                     <li class="sidenav-divider mb-1"></li>
                     <li class="sidenav-header small font-weight-semibold">Components</li>
+                    
+                    <li class="sidenav-item">
+                        <a href="{{route('subadmin.election')}}" class="sidenav-link">
+                            <i class="sidenav-icon feather icon-chevrons-right"></i>
+                            <div>Election Management</div>
+                        </a>
+                    </li>
 
                     <li class="sidenav-item">
                         <a href="javascript:" class="sidenav-link sidenav-toggle">
-                            <i class="sidenav-icon feather icon-settings"></i>
+                            <i class="sidenav-icon feather icon-chevrons-right"></i>
                             <div>Ballot Management</div>
                         </a>
                         <ul class="sidenav-menu">
@@ -71,24 +78,9 @@
                     </li>
 
 
-
-                    <li class="sidenav-divider mb-1"></li>
                     
-                    <li class="sidenav-item">
-                        <a href="{{route('subadmin.election')}}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-chevrons-right"></i>
-                            <div>Election Management</div>
-                        </a>
-                    </li>
 
-                    <li class="sidenav-divider mb-1"></li>
-                    
-                    <li class="sidenav-item">
-                        <a href="{{route('subadmin.to_result')}}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-chevrons-right"></i>
-                            <div>Result Management</div>
-                        </a>
-                    </li>
+                   
 
                     <li class="sidenav-divider mb-1"></li>
                     
@@ -106,7 +98,7 @@
                     <li class="sidenav-item">
                         <a href="{{ route('subadmin.change-account') }}" class="sidenav-link">
                             <i class="sidenav-icon feather icon-chevrons-right"></i>
-                            <div>Update Account</div>
+                            <div>User Account</div>
                         </a>
                     </li>
                 </ul>

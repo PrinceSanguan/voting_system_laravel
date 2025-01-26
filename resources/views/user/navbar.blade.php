@@ -1,6 +1,9 @@
-<nav class="w-100 py-3 bg-dark">
+
+<nav class="w-100 py-3 bg-grey">
   <div class="text-center fs-2 text-light fw-bold">
-    Nexus' E-Voting - {{ session()->get('organization') }} Organization
+   {{ session()->get('organization') }} {{ session()->get('election_year') }} 
+   
+    Election
   </div>
 </nav>
 <nav class="navbar bg-body-tertiary">

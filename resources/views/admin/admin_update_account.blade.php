@@ -96,22 +96,21 @@
                     <div class="h3 font-weight-bold col-12 mb-4">My Data: </div>
                     <div class="row">
                         <div class="my-4 col-lg-6">
-                            <label class="font-weight-bold">Name: </label>
-                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Name" type="text" value="${name}" name="name" readonly>
+                            <label class="font-weight-bold">Full Name: </label>
+                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Full Name" type="text" value="${name}" name="name" >
                         </div>
                         <div class="my-4 col-lg-6">
                             <label class="font-weight-bold">Role: </label>
-                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Role" type="text" value="${role}" name="role" readonly>
+                            <input required class="form-control rounded-pill shadow-sm" placeholder="Update Your Role" type="text" value="${role}" name="role" >
                         </div>
 
-                        <div class="my-4 col-lg-6">
-                            <label class="font-weight-bold">Age: </label>
-                            <input required class="form-control rounded-pill shadow-sm" type="text" placeholder="Update Your Age" value="${age}" name="age">
-                        </div>
+                        
 
                         <div class="my-4 col-lg-6">
                             <label class="font-weight-bold">Gender: </label>
-                            <input required class="form-control rounded-pill shadow-sm" type="text" placeholder="Update Your Age" value="${gender}" name="gender" readonly>
+                            <select class="form-control" name="gender" required>
+                                ${genderOptions}
+                            </select>
                         </div>
 
                         <div class="my-4 col-lg-12 text-right">

@@ -64,7 +64,7 @@
           </div>
           <button type="submit" class="btn btn-primary w-100 text-white my-3 rounded-0">Register</button>
           <div class="text-end ">
-                <span class=" fw-semibold"> Have An Account?
+                <span class=" fw-semibold"> Already Have An Account?
                   <a href="{{ url('/') }}" class="w-50 text-dark">Login</a>
                 </span>
               

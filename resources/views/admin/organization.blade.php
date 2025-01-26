@@ -62,7 +62,7 @@
 
                                     <div class="my-2">
                                         <label class="font-weight-bold">
-                                            Organization
+                                            Organization<span style="color: red;">*</span>
                                         </label>
                                         <input type="text" class="form-control" placeholder="Insert the Organization name here..." name="organization">
                                     </div>
@@ -70,7 +70,7 @@
                                         <label class="font-weight-bold">
                                             Description
                                         </label>
-                                        <input type="text" class="form-control" placeholder="Insert to whom/where the organization is for..." name="program_course">
+                                        <input type="text" class="form-control" placeholder="Insert the Course/Program of the Organization..." name="program_course">
                                     </div>
 
                                   </div>
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="card p-3">
-                            
+
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
@@ -101,15 +101,52 @@
                                     @foreach($data as $key)
                                     <tr>
                                         <td class="text-center">{{ $count }}</td>
-                                        <td class="text-center">{{$key->organization}}</td>
+                                        <td class="text-center">{{$key->Organization}}</td>
                                         <td class="text-center">{{$key->program_course}}</td>
                                         <td class="text-center">
                                             <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#update{{$key->id}}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <a href="" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="update{{$key->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Organization</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                        <form method="post" action="{{route('admin.action.update.organization')}}">
+                                                            @csrf
+                                                            <input type="hidden" value="{{ $key->id }}" name="id">
+                                                            <input type="hidden" value="organizations" name="table">
+                                                            <div class="modal-body">
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                        Organization<span style="color: red;">*</span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" value="{{ $key->Organization }}" placeholder="Insert the Organization name here..." name="organization">
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <div class="font-weight-bold text-left">
+                                                                        Description
+                                                                    </div>
+                                                                    <input type="text" value="{{ $key->program_course }}" class="form-control" placeholder="Insert the Course/Program of the Organization..." name="program_course">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <a href="{{ route('action.delete.organization', [ 'id' => $key->id ]) }}" class="btn btn-danger btn-sm" >
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                         </td>
                                     </tr>
                                     @php
@@ -117,9 +154,9 @@
                                     @endphp
                                     @endforeach
                                 </tbody>
-                            
+
                             </table>
-                            
+
                         </div>
 
                     </div>

@@ -3,7 +3,8 @@
     <!-- Brand demo (see assets/css/demo/demo.css) -->
     <a href="index.html" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
         <span class="app-brand-logo demo">
-            <img src="assets/img/logo-dark.png" alt="Brand Logo" class="img-fluid">
+            <img src="{{ asset('Elevotelogo.png') }}" width="50" height="50" class="rounded-circle" alt=""> EleVote
+            
         </span>
         <span class="app-brand-text demo font-weight-normal ml-2">Bhumlu</span>
     </a>
@@ -63,15 +64,15 @@
                     <input type="hidden" name="id" value="{{ session()->get('id') }}">
                     <div class="modal-body">
                         <div class="my-3">
-                            <span>Old PIN</span>
+                            Old PIN<span style="color: red;">*</span> 
                             <input type="password" name="password" placeholder="Enter your old PIN" id="" class="form-control" required>
                         </div>
                         <div class="my-3">
-                            <span>New PIN</span>
+                            New PIN<span style="color: red;">*</span> 
                             <input type="password" name="newpassword" placeholder="Enter your new PIN" id="password" class="form-control" required>
                         </div>
                         <div class="my-3">
-                            <span>Confirm PIN</span>
+                            <span>Confirm PIN<span style="color: red;">*</span> 
                             <input id="confirmpass" onChange="handleConfirmation(this.value)" type="password" placeholder="Confirm PIN" id="" class="form-control" required>
                         </div>
                     </div>

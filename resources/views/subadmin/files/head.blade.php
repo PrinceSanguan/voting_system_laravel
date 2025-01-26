@@ -7,7 +7,7 @@
     <meta name="description" content="Bhumlu Bootstrap admin template made using Bootstrap 4, it has tons of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
     <meta name="keywords" content="Bhumlu, bootstrap admin template, bootstrap admin panel, bootstrap 4 admin template, admin template">
     <meta name="author" content="Srthemesvilla" />
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon.ico')}}">
+    <link rel="icon" type="image/x-icon" href="{{asset('Elevotelogo.png')}}">
 
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">

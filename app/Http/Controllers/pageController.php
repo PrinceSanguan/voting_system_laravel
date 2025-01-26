@@ -118,7 +118,7 @@ class pageController extends Controller
                     ->where('status', 'started')
                     ->orderby('id', 'desc')
                     ->first();
-        
+
         if (!$election) {
             return view('subadmin.voters-turnout')->with([
                 'label' => 'Voters Turnout',
@@ -126,6 +126,8 @@ class pageController extends Controller
                 'message' => 'No Election Found'
             ]);
         }
+        
+       
 
         $voted = ballot::select('fingerprint')
                     ->where('election_title', $election->election_title)
@@ -161,10 +163,10 @@ class pageController extends Controller
                     ->where('organization', Session::get('organization'))
                     ->where('gender', 'male')
                     ->count();
-                    
+
         $femalenotvoted = voters::select('id')->whereNotIn('id', $voted)
-                    ->where('organization', Session::get('organization')) 
-                    ->where('gender', 'female')           
+                    ->where('organization', Session::get('organization'))
+                    ->where('gender', 'female')
                     ->count();
         $position = votingcomponents::select('position')
                     ->where('organization', Session::get('organization'))
@@ -202,13 +204,13 @@ class pageController extends Controller
     public function subadmin_index_page() {
         // echo Session::get('Designation');
 
-        
+
 
         $position = votingcomponents::where('organization', Session::get('organization'))
                 ->where('status', 3)->count();
         $partylist = votingcomponents::where('organization', Session::get('organization'))
                 ->where('status', 2)->count();
-        
+
         $election = elections::where('department', Session::get('organization'))
                 ->orderby('id', 'desc')
                 ->first();
@@ -224,7 +226,7 @@ class pageController extends Controller
         }
 
         $voters = voters::where('organization', Session::get('organization'))->count();
-            
+
         // return response()->json([
         //     'data' => [
         //         'position' => $position,
@@ -253,7 +255,7 @@ class pageController extends Controller
 
         return view('subadmin.positions', [
             'label' => 'Position',
-            'data' => votingcomponents::select('position', 'id')
+            'data' => votingcomponents::select('maxvote','position', 'id')
             ->where('status', 3)
             ->where('organization', session()->get('organization'))
             ->get(),
@@ -327,7 +329,7 @@ class pageController extends Controller
         ->get();
 
         $candidates = votingcandidate::where('organization', Session::get('organization'))->get();
-        
+
         return view('subadmin.election_type',[
 
             'label' => 'Election Type',
@@ -377,9 +379,10 @@ class pageController extends Controller
             'data' => elections::where('department', Session::get('organization'))
                                 ->get()
 
-        ]); 
+        ]);
 
     }
+    
 
     public function subadmin_change_account(){
 
@@ -412,7 +415,7 @@ class pageController extends Controller
         return view('admin.organization', [
 
             'label' => 'Organization',
-            'data' => organizations::select('organization', 'program_course')->get()
+            'data' => organizations::all()
 
         ]);
     }

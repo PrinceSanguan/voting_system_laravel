@@ -38,20 +38,18 @@
         <img src="{{ asset('print/logo.png') }}" height="100px" width="100px" >
         <div class="text-center">
           <div class="fs-7">West Visayas State University</div>
-          <div class="fs-6">(Formerly Iloilo Normal School)</div>
           <div class="fs-7">HIMAMAYLAN CITY CAMPUS</div>
           <div class="fs-6">Brgy. Caradio-an Himamaylan City, Negros Occidental, 6108</div>
           <div class="fs-6">* Tel. No. (034)-388-3300</div>
           <div class="fs-6">* Official Page <a href="https:www.facebook.com/westhimamaylan/">https:www.facebook.com/westhimamaylan/</a></div>
           <div class="fs-6">Email Address: himamaylan@wvsu.edu.ph</div>
         </div>
-        <img src="{{ asset('print/logo.png') }}" height="100px" width="100px" >
+        <img src="{{ asset('print/logohcc.png') }}" height="100px" width="100px" >
       </div>
 
       <div class="my-3 text-center">
         <div class="fw-bold fs-7">{{ $electionYear }} {{ $electionTitle }}</div>
-        <div class="fw-bold fs-7">CERTIFICATE OF CANVASS</div>
-        <div class="fw-bold fs-7">FOR ORGANIZATION</div>
+        <div class="fw-bold fs-7">CERTIFICATE OF CANVAS</div>
         <div class="fw-bold fs-7">COC NO.: 1 of 1</div>
       </div>
 
@@ -59,7 +57,7 @@
       <!-- <div>TOTAL NUMBERS OF COC's REPORTED: <b>5</b></div> -->
       <div>TOTAL NUMBERS OF COC's ELECTORATES: <b>{{ $votersCount }}</b></div>
       <div>TOTAL NUMBERS OF COC's ELECTORATES THAT ACTUALLY VOTED: <b>{{ $uniqueBallotsCount }}</b></div>
-      <div>VOTER's TURNOUT (%): <b>{{ $percentage }}</b></div>
+      <div>VOTER's TURNOUT (%): <b>{{ $percentage}}</b></div>
     </div>
 
     </div>
@@ -71,7 +69,7 @@
                 <th colspan="5">{{ $electionTitle }}</th>
               </tr>
                 <tr>
-                    <th class="text-center">NAME OF CANDIDATES/POSITION</th>
+                    <th class="text-center">NAME OF CANDIDATES</th>
                     <th class="text-center">TOTAL GARRNERED VOTES</th>
                     <th class="text-center">PERCENTAGE OF VOTES (%)</th>
                     <th class="text-center">RANKING</th>
@@ -111,8 +109,28 @@
                       @endforeach
                   @endforeach
               </tbody>
+              
 
         </table>
+        <div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-4">
+            <p class="mb-0 fw-bold">________________________</p>
+            <p class="mb-0"></p>
+            <p class="mb-0">Position/Role</p>
+        </div>
+        <div class="col-4">
+            <p class="mb-0 fw-bold">________________________</p>
+            <p class="mb-0"></p>
+            <p class="mb-0">Position/Role</p>
+        </div>
+        <div class="col-4">
+            <p class="mb-0 fw-bold">________________________</p>
+            <p class="mb-0"></p>
+            <p class="mb-0">Position/Role</p>
+        </div>
+    </div>
+</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
